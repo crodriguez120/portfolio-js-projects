@@ -12,35 +12,38 @@
     <div class="container">
         <h1>Sign up today</h1>
         <!-- Form -->
-        <form id="form">
+        <form id="form" novalidate>
             <!-- Full name -->
              <div class="form-group">
                 <label for="name">Full Name</label>
                 <input required type="text" id="name" placeholder="Full name"
-                       minlength="3" maxlength="100">
+                       minlength="3" maxlength="100" name="name">
              </div>
              <!-- Phone Number -->
              <div class="form-group">
                 <label for="phone">Phone Number</label>
                 <input required type="tel" id="phone" placeholder="809-364-0925"
-                       pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                       pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="phone">
              </div>
              <!-- Email Address -->
              <div class="form-group">
                 <label for="email">Email Address</label>
-                <input required type="email" id="email" placeholder="carlos120@email.com">
+                <input required type="email" id="email" placeholder="carlos120@email.com"
+                       name="email">
              </div>
              <!-- Website URL -->
              <div class="form-group">
                 <label for="website">Website URL</label>
-                <input required type="url" id="website" placeholder="youtube.com">
+                <input required type="url" id="website" placeholder="youtube.com"
+                       name="website">
              </div>
              <!-- First Password -->
              <div class="form-group">
                 <label for="firstPassword">Create Password</label>
                 <input required type="password" id="firstPassword" placeholder="Create Password (Min. 8 Characters)"
                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$"
-                       title="Please include at least 1 uppercase character, 1 lower case character, and 1 number">
+                       title="Please include at least 1 uppercase character, 1 lower case character, and 1 number"
+                       name="password">
              </div>
              <!-- Second Password -->
              <div class="form-group">
