@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validator</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sign up today</h1>
+        <!-- Form -->
+        <form id="form">
+            <!-- Full name -->
+             <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Full name">
+             </div>
+             <!-- Phone Number -->
+             <div class="form-group">
+                <label for="phone">Full Name</label>
+                <input type="tel" id="phone" placeholder="809-364-0925">
+             </div>
+             <!-- Email Address -->
+             <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="carlos120@email.com">
+             </div>
+             <!-- Website URL -->
+             <div class="form-group">
+                <label for="website">Website URL</label>
+                <input type="url" id="website" placeholder="youtube.com">
+             </div>
+             <!-- First Password -->
+             <div class="form-group">
+                <label for="firstPassword">Create Password</label>
+                <input type="password" id="firstPassword" placeholder="Create Password">
+             </div>
+             <!-- Second Password -->
+             <div class="form-group">
+                <label for="secondPassword">Confirm Password</label>
+                <input type="password" id="secondPassword" placeholder="Confirm Password">
+             </div>
+             <button type="submit">Register</button>
+        </form>
+        <!-- Error/Success Message -->
+         <div class="message-container">
+            <h3 id="message">Don't Hesitate!</h3>
+         </div>
+    </div>
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
