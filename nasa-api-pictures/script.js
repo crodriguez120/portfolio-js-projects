@@ -12,9 +12,10 @@ const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKEY}&count=${co
 let resultsArray = [];
 let favorites = {};
 
-// Update DOM
-function updateDOM() {
-    resultsArray.forEach((result) => {
+// Create DOM
+function createDOMNodes(page) {
+    const currentArray = page === 'results' ? resultsArray : Object.values(favorites);
+    currentArray.forEach((result) => {
         // Card Container
         const card = document.createElement('div');
         card.classList.add('card');
@@ -64,12 +65,22 @@ function updateDOM() {
     })
 }
 
+// Update DOM
+function updateDOM(page) {
+    // Get Favorites from localStorage
+    if (localStorage.getItem('nasaFavorites')) {
+        favorites = JSON.parse(localStorage.getItem('nasaFavorites'));
+        console.log('Favorites from localStorage: ', favorites);
+    }
+    createDOMNodes(page)
+}
+
 // Get 10 cards from NASA API
 async function getNasaInfo() {
     try {
         const response = await fetch(apiUrl);
         resultsArray = await response.json();
-        updateDOM();
+        updateDOM('favorites');
     } catch (error) {
         // Catch Error Here
         console.log(error);
