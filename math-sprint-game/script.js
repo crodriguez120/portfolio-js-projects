@@ -86,7 +86,7 @@ function createEquations() {
 
 // Get the value from selected radio button
 function getRadioValue() {
-  let radioValue = 0;
+  let radioValue;
   radioInputs.forEach((radioInput) => {
     if (radioInput.checked) {
       radioValue = radioInput.value;
@@ -95,11 +95,35 @@ function getRadioValue() {
   return radioValue;
 }
 
+// Displays 3, 2, 1, GO!
+function startCountdown() {
+  countdown.textContent = '3';
+  setTimeout(() => {
+    countdown.textContent = '2';
+  }, 1000);
+  setTimeout(() => {
+    countdown.textContent = '1';
+  }, 2000);
+  setTimeout(() => {
+    countdown.textContent = 'Go!';
+  }, 3000);
+}
+
+// Navigate from Splash Page to Countdown Page
+function showCountdown() {
+    countdownPage.hidden = false;
+    splashPage.hidden = true;
+    startCountdown();
+}
+
 // Form that decides amount of questions
 function selectQuestionAmount(e) {
   e.preventDefault();
   questionAmount = getRadioValue();
   console.log('Questions amount: ', questionAmount);
+  if (questionAmount) {
+    showCountdown();
+  }
 }
 
 startForm.addEventListener('click', () => {
