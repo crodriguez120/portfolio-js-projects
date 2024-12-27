@@ -25,6 +25,7 @@ body {
   height: 100vh;
   width: 100vw;
   position: fixed;
+  background: whitesmoke;
   z-index: 10;
   display: flex;
   align-items: center;

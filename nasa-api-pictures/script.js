@@ -12,6 +12,21 @@ const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKEY}&count=${co
 let resultsArray = [];
 let favorites = {};
 
+function showContent(page) {
+    window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+    });
+    if (page === 'results') {
+        resultsNav.classList.remove('hidden');
+        favoritesNav.classList.add('hidden'); 
+    } else {
+        resultsNav.classList.add('hidden');
+        favoritesNav.classList.remove('hidden'); 
+    }
+    loader.classList.add('hidden');
+}
+
 // Create DOM
 function createDOMNodes(page) {
     const currentArray = page === 'results' ? resultsArray : Object.values(favorites);
@@ -40,7 +55,7 @@ function createDOMNodes(page) {
         // Save Text
         const saveText = document.createElement('p');
         saveText.classList.add('clickable');
-        if (page === 'result') {
+        if (page === 'results') {
             saveText.textContent = 'Add to Favorites';
             saveText.setAttribute('onClick', `saveFavorite('${result.url}')`);
         } else {
@@ -78,15 +93,18 @@ function updateDOM(page) {
         console.log('Favorites from localStorage: ', favorites);
     }
     imagesContainer.textContent = '';
-    createDOMNodes(page)
+    createDOMNodes(page);
+    showContent(page);
 }
 
 // Get 10 cards from NASA API
 async function getNasaInfo() {
+    // Show Loader
+    loader.classList.remove('hidden');
     try {
         const response = await fetch(apiUrl);
         resultsArray = await response.json();
-        updateDOM('favorites');
+        updateDOM('results');
     } catch (error) {
         // Catch Error Here
         console.log(error);
