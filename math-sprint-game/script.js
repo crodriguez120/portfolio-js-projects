@@ -33,6 +33,12 @@ const wrongFormat = [];
 
 // Scroll
 
+// Displays Game Page
+function showGamePage() {
+  gamePage.hidden = false;
+  countdownPage.hidden = true;
+}
+
 // Get Random number up to a max number
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -69,29 +75,45 @@ function createEquations() {
     equationsArray.push(equationObject);
   }
   shuffle(equationsArray);
-  console.log('Array of equations: ', equationsArray);
+}
+
+// Add Equations to DOM
+function equationsToDOM() {
+  equationsArray.forEach((equation) => {
+    // Items
+  const items = document.createElement('div');
+  items.classList.add('item');
+  // Equation Text
+  const equationText = document.createElement('h1');
+  equationText.textContent = equation.value;
+  // Append
+  items.appendChild(equationText);
+  itemContainer.appendChild(items);
+  });
 }
 
 // Dynamically adding correct/incorrect equations
-// function populateGamePage() {
-//   // Reset DOM, Set Blank Space Above
-//   itemContainer.textContent = '';
-//   // Spacer
-//   const topSpacer = document.createElement('div');
-//   topSpacer.classList.add('height-240');
-//   // Selected Item
-//   const selectedItem = document.createElement('div');
-//   selectedItem.classList.add('selected-item');
-//   // Append
-//   itemContainer.append(topSpacer, selectedItem);
+function populateGamePage() {
+  // Reset DOM, Set Blank Space Above
+  itemContainer.textContent = '';
+  // Spacer
+  const topSpacer = document.createElement('div');
+  topSpacer.classList.add('height-240');
+  // Selected Item
+  const selectedItem = document.createElement('div');
+  selectedItem.classList.add('selected-item');
+  // Append
+  itemContainer.append(topSpacer, selectedItem);
 
-//   // Create Equations, Build Elements in DOM
+  // Create Equations, Build Elements in DOM
+  createEquations();
+  equationsToDOM();
 
-//   // Set Blank Space Below
-//   const bottomSpacer = document.createElement('div');
-//   bottomSpacer.classList.add('height-500');
-//   itemContainer.appendChild(bottomSpacer);
-// }
+  // Set Blank Space Below
+  const bottomSpacer = document.createElement('div');
+  bottomSpacer.classList.add('height-500');
+  itemContainer.appendChild(bottomSpacer);
+}
 
 // Get the value from selected radio button
 function getRadioValue() {
@@ -123,7 +145,8 @@ function showCountdown() {
     countdownPage.hidden = false;
     splashPage.hidden = true;
     startCountdown();
-    createEquations();
+    populateGamePage();
+    setTimeout(() => showGamePage(), 4000);
 }
 
 // Form that decides amount of questions
