@@ -22,6 +22,7 @@ const playAgainBtn = document.querySelector('.play-again');
 let equationsArray = [];
 let questionAmount = 0;
 let playerGuessArray = [];
+let bestScoreArray = [];
 
 // Game Page
 let firstNumber = 0;
@@ -35,9 +36,53 @@ let timePlayed = 0;
 let baseTime = 0;
 let penaltyTime = 0;
 let finalTime = 0;
+let finalTimeDisplay = '0.0';
 
 // Scroll
 let valueY = 0;
+
+// Refresh Splash Page Best Scores
+function bestScoresToDOM() {
+    bestScores.forEach((bestScore, index) => {
+      const bestScoreEl = bestScore;
+      bestScoreEl.textContent = `${bestScoreArray[index].bestScore}s`;
+    })
+}
+
+// Check Local Storage for Best Scores, set bestScoreArray
+function getSavedBestScores() {
+  if (localStorage.getItem('bestScores')) {
+    bestScoreArray = JSON.parse(localStorage.bestScores);
+  } else {
+    bestScoreArray = [
+      {questions: 10, bestScore: finalTimeDisplay},
+      {questions: 25, bestScore: finalTimeDisplay},
+      {questions: 50, bestScore: finalTimeDisplay},
+      {questions: 99, bestScore: finalTimeDisplay},
+    ]
+    localStorage.setItem('bestScores', JSON.stringify(bestScoreArray));
+  }
+  bestScoresToDOM()
+}
+
+// Update Best Score Array
+function updateBestScore() {
+  bestScoreArray.forEach((score, index) => {
+    // Select Correct Best Score to Update
+    if (questionAmount == score.questions) {
+      // Return Best Score as number with one decimal 
+      const savedBestScore = Number(bestScoreArray[index].bestScore);
+      // Update if the new final score is less or replacing zero
+      if (savedBestScore === 0 || savedBestScore > finalTime) {
+        bestScoreArray[index].bestScore = finalTimeDisplay;
+      };
+    };
+  });
+  // Update Splash Page
+  bestScoresToDOM();
+  // Set to Local Storage
+  localStorage.setItem('bestScores', JSON.stringify(bestScoreArray));
+}
 
 // Reset Game
 function playAgain() {
@@ -62,12 +107,13 @@ function showScorePage() {
 
 // Format & Display Time in DOM
 function scoreToDOM() {
-  const finalTimeDisplay = finalTime.toFixed(1);
-  const baseTimeDisplay = timePlayed.toFixed(1);
-  const penaltyTimeDisplay = penaltyTime.toFixed(1);
-  baseTimeEl.textContent = `Base Time: ${baseTimeDisplay}s`;
-  penaltyTimeEl.textContent = `Penalty: +${penaltyTimeDisplay}s`;
+  finalTimeDisplay = finalTime.toFixed(1);
+  baseTime = timePlayed.toFixed(1);
+  penaltyTime = penaltyTime.toFixed(1);
+  baseTimeEl.textContent = `Base Time: ${baseTime}s`;
+  penaltyTimeEl.textContent = `Penalty: +${penaltyTime}s`;
   finalTimeEl.textContent = `${finalTimeDisplay}s`;
+  updateBestScore()
   // Scroll to Top, go to Score Page
   itemContainer.scrollTo({top: 0, behavior: 'instant'});
   showScorePage();
@@ -86,7 +132,6 @@ function checkTime() {
     });
     finalTime = timePlayed + penaltyTime;
     scoreToDOM();
-    console.log("time", timePlayed, ", penalty for incorrect answers: ", penaltyTime, ", final time: ", finalTime);
   }
 }
 
@@ -209,25 +254,26 @@ function getRadioValue() {
 
 // Displays 3, 2, 1, GO!
 function startCountdown() {
-  countdown.textContent = '3';
-  setTimeout(() => {
-    countdown.textContent = '2';
+  let count = 3;
+  const timeCountDown = setInterval(() => {
+    count--;
+    if (count === 0) {
+      countdown.textContent = 'Go!';
+    } else if (count === -1) {
+      showGamePage();
+      clearInterval(timeCountDown);
+    } else {
+      countdown.textContent = count;
+    };
   }, 1000);
-  setTimeout(() => {
-    countdown.textContent = '1';
-  }, 2000);
-  setTimeout(() => {
-    countdown.textContent = 'Go!';
-  }, 3000);
 }
 
 // Navigate from Splash Page to Countdown Page
 function showCountdown() {
     countdownPage.hidden = false;
     splashPage.hidden = true;
-    startCountdown();
     populateGamePage();
-    setTimeout(() => showGamePage(), 4000);
+    startCountdown();
 }
 
 // Form that decides amount of questions
@@ -253,3 +299,6 @@ startForm.addEventListener('click', () => {
 // Event Listeners
 startForm.addEventListener('submit', selectQuestionAmount);
 gamePage.addEventListener('click', startTimer);
+
+// On Load
+getSavedBestScores();
